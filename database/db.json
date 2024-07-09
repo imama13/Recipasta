@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "id": "501a",
+      "username": "flynn",
+      "password": "fl",
+      "email": "fln@gmail.com",
+      "dob": "2024-08-09"
+    },
+    {
+      "id": "d424",
+      "username": "abcd",
+      "password": "1234",
+      "email": "a@g.com",
+      "dob": "2024-07-12"
+    },
+    {
+      "id": "eada",
+      "username": "a",
+      "password": "a",
+      "email": "a@g.com",
+      "dob": "2024-07-19"
+    },
+    {
+      "id": "9a4b",
+      "username": "asd",
+      "password": "asd",
+      "email": "a@g.com",
+      "dob": "2024-07-05"
+    }
+  ]
+}
