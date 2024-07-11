@@ -11,11 +11,11 @@
           :key="recipe.id"
           class="recipe-card"
         >
-        <img :src="recipe.pictureUrl" alt="Recipe Image" />
-        <h2 @click="viewRecipe(recipe.id)">{{ recipe.title }}</h2>
-        <p>Cooking time: {{ recipe.cookingTime }}</p>
-        <button @click="editRecipe(recipe.id)">Edit Recipe</button>
-      </div>
+          <img :src="recipe.pictureUrl" alt="Recipe Image" />
+          <h2 @click="viewRecipe(recipe.id)">{{ recipe.title }}</h2>
+          <p>Cooking time: {{ recipe.cookingTime }}</p>
+          <button @click="editRecipe(recipe.id)">Edit Recipe</button>
+        </div>
       </div>
     </div>
   </div>
@@ -30,20 +30,15 @@ const recipes = ref([]);
 const router = useRouter();
 const store = useStore();
 
-onMounted(() => {
-  fetchRecipes();
-});
 
-const fetchRecipes = async () => {
+onMounted(async () => {
   try {
     await store.dispatch('fetchRecipes'); // Ensure this action name matches your Vuex setup
     recipes.value = store.getters.recipes; // Assuming 'recipes' getter returns the fetched recipes
   } catch (error) {
     console.error('Error fetching recipes:', error);
   }
-};
-
-
+});
 
 const viewRecipe = (id) => {
   router.push(`/dashboard/recipe/${id}`);
@@ -53,9 +48,7 @@ const editRecipe = (id) => {
   router.push(`/dashboard/edit-recipe/${id}`);
 };
 
-onMounted(() => {
-  fetchRecipes();
-});
+//onMounted(fetchRecipes);
 </script>
 
 <style scoped>

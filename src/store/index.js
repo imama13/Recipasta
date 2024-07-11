@@ -4,7 +4,8 @@ import axios from 'axios';
 const store = createStore({
   state: {
     user: JSON.parse(localStorage.getItem('user')) || null,
-    recipes: []
+    recipes: [],
+    currentRecipe: null
   },
   mutations: {
     setUser(state, user) {
@@ -94,17 +95,17 @@ const store = createStore({
     async fetchRecipes({ commit }) {
       try {
         const response = await axios.get('http://localhost:3000/recipes');
+        console.log(response.data)
         commit('setRecipes', response.data);
       } catch (error) {
         console.error('Error fetching recipes:', error);
       }
     },
-    
-    async fetchRecipe({ commit }, id) {
+    async fetchRecipe({ commit }, recipeId) {
       try {
-        const response = await axios.get(`http://localhost:3000/recipes/${id}`);
-        commit('setCurrentRecipe', response.data);
-        return response.data;
+        const response = await axios.get(`http://localhost:3000/recipes/${recipeId}`);
+        commit('setCurrentRecipe', response.data[0]);
+        return response.data[0];
       } catch (error) {
         console.error('Error fetching recipe:', error);
         throw error;
@@ -125,16 +126,17 @@ const store = createStore({
       }
     },
   
-   async updateRecipe({ commit }, updatedRecipe) {
-    try {
-      const response = await axios.put(`http://localhost:3000/recipes/${updatedRecipe.id}`, updatedRecipe);
-      commit('updateRecipe', response.data);
-      return response.data;
-    } catch (error) {
-      console.error('Error updating recipe:', error);
-      throw error;
-    }
-  },
+    async updateRecipe({ commit, state }, updatedRecipe) {
+      try {
+        const recipeToUpdate = { ...state.currentRecipe, ...updatedRecipe };
+        const response = await axios.put(`http://localhost:3000/recipes/${updatedRecipe.id}`, recipeToUpdate);
+        commit('updateRecipe', response.data);
+        return response.data;
+      } catch (error) {
+        console.error('Error updating recipe:', error);
+        throw error;
+      }
+    },
   async deleteRecipe({ commit }, recipeId) {
     try {
       await axios.delete(`http://localhost:3000/recipes/${recipeId}`);
@@ -148,7 +150,8 @@ const store = createStore({
   getters: {
     user: state => state.user,
     isLoggedIn: state => !!state.user,
-    recipes: state => state.recipes
+    recipes: state => state.recipes,
+    currentRecipe: state => state.currentRecipe
   },
 });
 

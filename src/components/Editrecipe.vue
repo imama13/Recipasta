@@ -8,9 +8,9 @@
       <p>Ingredients: <textarea v-model="ingredients" ></textarea></p>
       <p>Recipe: <textarea v-model="description" ></textarea></p>
       <button type="submit">Update Recipe</button>
-      <button type="button" @click="deleteRecipe">Delete Recipe</button>
+      <button type="button" @click="confirmDeleteRecipe" class="delete-button">Delete Recipe</button>
     </form>
-    <div v-if="message" class="message">{{ message }}</div>
+    <div v-if="message" class="popup">{{ message }}</div>
   </div>
 </template>
 
@@ -19,6 +19,13 @@ import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
+
+
+const router = useRouter();
+const route = useRoute();
+const store = useStore();
+const recipeId = route.params.id;
+
 const title = ref('');
 const pictureUrl = ref('');
 const cookingTime = ref('');
@@ -26,19 +33,19 @@ const ingredients = ref('');
 const description = ref('');
 const message = ref('');
 
-const router = useRouter();
-const route = useRoute();
-const store = useStore();
-const recipeId = route.params.id;
+onMounted(() => {
+  fetchRecipe()
+  console.log(title.value)
+})
 
 const fetchRecipe = async () => {
   try {
     const recipe = await store.dispatch('fetchRecipe', recipeId);
-    title.value = recipe.title;
-    pictureUrl.value = recipe.pictureUrl;
-    cookingTime.value = recipe.cookingTime;
-    ingredients.value = recipe.ingredients;
-    description.value = recipe.description;
+    title.value = recipe.title || '';
+    pictureUrl.value = recipe.pictureUrl || '';
+    cookingTime.value = recipe.cookingTime || '';
+    ingredients.value = recipe.ingredients || '';
+    description.value = recipe.description || '';
   } catch (error) {
     console.error('Error fetching recipe:', error);
   }
@@ -46,14 +53,16 @@ const fetchRecipe = async () => {
 
 const updateRecipe = async () => {
   try {
-    await store.dispatch('updateRecipe', {
+    const updatedRecipe = {
       id: recipeId,
       title: title.value,
       pictureUrl: pictureUrl.value,
       cookingTime: cookingTime.value,
       ingredients: ingredients.value,
       description: description.value
-    });
+    };
+
+    await store.dispatch('updateRecipe', updatedRecipe);
     message.value = 'Recipe updated successfully';
     setTimeout(() => {
       message.value = '';
@@ -61,6 +70,16 @@ const updateRecipe = async () => {
     }, 2000);
   } catch (error) {
     console.error('Error updating recipe:', error);
+    message.value = 'Recipe update failed';
+    setTimeout(() => {
+      message.value = '';
+    }, 3000);
+  }
+};
+
+const confirmDeleteRecipe = () => {
+  if (confirm('Are you sure you want to delete this recipe?')) {
+    deleteRecipe();
   }
 };
 
@@ -74,6 +93,10 @@ const deleteRecipe = async () => {
     }, 2000);
   } catch (error) {
     console.error('Error deleting recipe:', error);
+    message.value = 'Recipe deletion failed';
+    setTimeout(() => {
+      message.value = '';
+    }, 3000);
   }
 };
 
@@ -94,8 +117,25 @@ textarea {
   height: 100px;
 }
 
-.message {
-  margin-top: 20px;
-  color: green;
+.popup {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.delete-button {
+  background-color: red;
+  color: white;
+  padding: 9px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.delete-button:hover {
+  background-color: darkred;
 }
 </style>

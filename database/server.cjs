@@ -69,15 +69,28 @@ app.delete('/users/:id', (req, res) => {
 })
 
 // Fetch recipes for a specific user
+app.get('/recipes/:recipeId', (req, res) => {
+  const {recipeId} = req.params;
+    db.query('SELECT * FROM recipes where id = ?', [recipeId], (err, results) => {
+      if (err) {
+        console.error('Error fetching recipes:', err)
+        return res.status(500).json({ error: 'Failed to fetch recipes.' })
+      }
+      console.log('Fetched recipes:', results)
+      res.json(results)
+    })
+})
+
 app.get('/recipes', (req, res) => {
-  db.query('SELECT * FROM recipes', (err, results) => {
-    if (err) {
-      console.error('Error fetching recipes:', err)
-      return res.status(500).json({ error: 'Failed to fetch recipes.' })
-    }
-    console.log('Fetched recipes:', results)
-    res.json(results)
-  })
+    db.query('SELECT * FROM recipes', (err, results) => {
+      if (err) {
+        console.error('Error fetching recipes:', err)
+        return res.status(500).json({ error: 'Failed to fetch recipes.' })
+      }
+      console.log('Fetched recipes:', results)
+      res.json(results)
+    })
+  
 })
 
 // Post a new recipe
@@ -92,7 +105,6 @@ app.post('/recipes', (req, res) => {
     res.json({ id: results.insertId, title, pictureUrl, cookingTime, ingredients, description, userId });
   });
 });
-
 
 // Update a recipe
 app.put('/recipes/:id', (req, res) => {
