@@ -4,6 +4,7 @@ import axios from 'axios';
 const store = createStore({
   state: {
     user: JSON.parse(localStorage.getItem('user')) || null,
+    recipes: []
   },
   mutations: {
     setUser(state, user) {
@@ -13,6 +14,24 @@ const store = createStore({
       } else {
         localStorage.removeItem('user');
       }
+    },
+    setRecipes(state, recipes) {
+      state.recipes = recipes;
+    },
+    setCurrentRecipe(state, recipe) {
+      state.currentRecipe = recipe;
+    },
+    addRecipe(state, recipe) {
+      state.recipes.push(recipe);
+    },
+    updateRecipe(state, updatedRecipe) {
+      const index = state.recipes.findIndex(recipe => recipe.id === updatedRecipe.id);
+      if (index !== -1) {
+        state.recipes.splice(index, 1, updatedRecipe);
+      }
+    },
+    deleteRecipe(state, recipeId) {
+      state.recipes = state.recipes.filter(recipe => recipe.id !== recipeId);
     },
   },
   actions: {
@@ -71,11 +90,65 @@ const store = createStore({
     },
     logout({ commit }) {
       commit('setUser', null);
+    },
+    async fetchRecipes({ commit }) {
+      try {
+        const response = await axios.get('http://localhost:3000/recipes');
+        commit('setRecipes', response.data);
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+      }
+    },
+    
+    async fetchRecipe({ commit }, id) {
+      try {
+        const response = await axios.get(`http://localhost:3000/recipes/${id}`);
+        commit('setCurrentRecipe', response.data);
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching recipe:', error);
+        throw error;
+      }
+    },
+    
+    async postRecipe({ commit, state }, recipeData) {
+      try {
+        const response = await axios.post('http://localhost:3000/recipes', {
+          ...recipeData,
+          userId: state.user.id
+        });
+        commit('addRecipe', response.data);
+        return response.data;
+      } catch (error) {
+        console.error('Error posting recipe:', error);
+        throw error;
+      }
+    },
+  
+   async updateRecipe({ commit }, updatedRecipe) {
+    try {
+      const response = await axios.put(`http://localhost:3000/recipes/${updatedRecipe.id}`, updatedRecipe);
+      commit('updateRecipe', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating recipe:', error);
+      throw error;
     }
   },
+  async deleteRecipe({ commit }, recipeId) {
+    try {
+      await axios.delete(`http://localhost:3000/recipes/${recipeId}`);
+      commit('deleteRecipe', recipeId);
+    } catch (error) {
+      console.error('Error deleting recipe:', error);
+      throw error;
+    }
+  }
+},
   getters: {
     user: state => state.user,
     isLoggedIn: state => !!state.user,
+    recipes: state => state.recipes
   },
 });
 

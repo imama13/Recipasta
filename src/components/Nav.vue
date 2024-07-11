@@ -2,6 +2,7 @@
   <nav class="navbar">
     <div class="spacer"></div>
     <button @click="goToMainPage">Home</button>
+    <button @click="navigateToPostRecipe">Post a Recipe</button>
     <button @click="goToEditProfile">Edit Profile</button>
     <button @click="logout">Logout</button>
   </nav>
@@ -16,6 +17,10 @@ const router = useRouter();
 
 const goToMainPage = () => {
   router.push('/dashboard');
+};
+
+const navigateToPostRecipe = () => {
+  router.push('/dashboard/post-recipe');
 };
 
 const goToEditProfile = () => {

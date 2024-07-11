@@ -3,7 +3,9 @@ import Signup from '../views/Signup.vue';
 import Login from '../views/Login.vue';
 import Dashboard from '../views/Dashboard.vue';
 import Editprofile from '../views/Editprofile.vue';
+import Postrecipe from '../views/Postrecipe.vue';
 import store from '../store/index.js';
+import Editrecipe from '@/views/Editrecipe.vue';
 
 
 const router = createRouter({
@@ -32,6 +34,18 @@ const router = createRouter({
       path: '/dashboard/edit-profile',
       name: 'edit-profile',
       component: Editprofile,
+      meta: {requiresAuth: true}
+    },
+    {
+      path: '/dashboard/post-recipe',
+      name: 'post-recipe',
+      component: Postrecipe,
+      meta: {requiresAuth: true}
+    },
+    {
+      path: '/dashboard/edit-recipe/:id',
+      name: 'edit-recipe',
+      component: Editrecipe,
       meta: {requiresAuth: true}
     }
   ]
