@@ -6,7 +6,7 @@ import Editprofile from '../views/Editprofile.vue';
 import Postrecipe from '../views/Postrecipe.vue';
 import store from '../store/index.js';
 import Editrecipe from '@/views/Editrecipe.vue';
-
+import Recipedetail from '@/views/Recipedetail.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +46,12 @@ const router = createRouter({
       path: '/dashboard/edit-recipe/:id',
       name: 'edit-recipe',
       component: Editrecipe,
+      meta: {requiresAuth: true}
+    },
+    {
+      path: '/dashboard/recipe/:id',
+      name: 'Recipedetail',
+      component: Recipedetail,
       meta: {requiresAuth: true}
     }
   ]

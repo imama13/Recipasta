@@ -40,12 +40,13 @@ const logout = () => {
   left: 0;
   width: 100%;
   height: 70px;
-  background-color: #c7b8e3;
+  background-color: #305f8e;
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 0px; /* Optional: add padding to the left and right */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: add a shadow for a better look */
+  box-shadow: 0 2px 5px rgba(58, 47, 47, 0.1); /* Optional: add a shadow for a better look */
+  z-index: 10;
 }
 
 .spacer {
@@ -56,8 +57,8 @@ const logout = () => {
   font-family: verdana, sans-serif;
   font-weight: 600;
   font-size:medium;
-  background-color: #c7b8e3;
-  color: rgb(44, 48, 53);
+  background-color: #3e77b000;
+  color: rgb(255, 255, 255);
   border: none;
   border-radius: 4px;
   padding: 5px 15px; /* Adjust padding for smaller button size */
@@ -65,6 +66,6 @@ const logout = () => {
 }
 
 .navbar button:hover {
-  background-color: #82447b50;
+  background-color: #043f7ad3;
 }
 </style>

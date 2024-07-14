@@ -1,17 +1,18 @@
 /* General styles for the entire page */
 body {
-  background-color: #c7c1e66e; /* Color for the rest of the page */
+  background-color: #00113A; /* Color for the rest of the page */
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   margin: 0;
   font-family: Arial, sans-serif;
+  
 }
 
 /* Styles specific to the form container */
 .form-container {
-  background-color: #c7b8e3; /* Color for the form */
+  background-color: #4f97d5; /* Color for the form */
   padding: 20px 50px;
   border: 1px solid #cccccc;
   border-radius: 12px;

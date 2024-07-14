@@ -104,6 +104,7 @@ const store = createStore({
     async fetchRecipe({ commit }, recipeId) {
       try {
         const response = await axios.get(`http://localhost:3000/recipes/${recipeId}`);
+        console.log(response.data)
         commit('setCurrentRecipe', response.data[0]);
         return response.data[0];
       } catch (error) {

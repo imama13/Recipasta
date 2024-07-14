@@ -2,11 +2,12 @@
   <div class="edit-recipe">
     <h1>Edit Recipe</h1>
     <form @submit.prevent="updateRecipe">
-      <p>Title: <input v-model="title" type="text"  /></p>
+      <p>Title: <input v-model="title" type="text" /></p>
       <p>Picture URL: <input v-model="pictureUrl" type="text" /></p>
-      <p>Cooking Time: <input v-model="cookingTime" type="text"  /></p>
-      <p>Ingredients: <textarea v-model="ingredients" ></textarea></p>
-      <p>Recipe: <textarea v-model="description" ></textarea></p>
+      <p>Or Upload New Picture: <input type="file" @change="handleFileUpload" /></p>
+      <p>Cooking Time: <input v-model="cookingTime" type="text" /></p>
+      <p>Ingredients: <textarea v-model="ingredients"></textarea></p>
+      <p>Recipe: <textarea v-model="description"></textarea></p>
       <button type="submit">Update Recipe</button>
       <button type="button" @click="confirmDeleteRecipe" class="delete-button">Delete Recipe</button>
     </form>
@@ -18,8 +19,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useStore } from 'vuex';
-
-
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const router = useRouter();
 const route = useRoute();
@@ -32,11 +32,11 @@ const cookingTime = ref('');
 const ingredients = ref('');
 const description = ref('');
 const message = ref('');
+const file = ref(null);
 
 onMounted(() => {
-  fetchRecipe()
-  console.log(title.value)
-})
+  fetchRecipe();
+});
 
 const fetchRecipe = async () => {
   try {
@@ -51,12 +51,27 @@ const fetchRecipe = async () => {
   }
 };
 
+const handleFileUpload = (event) => {
+  file.value = event.target.files[0];
+};
+
+const uploadFile = async () => {
+  if (file.value) {
+    const storage = getStorage();
+    const storageReference = storageRef(storage, `recipes/${Date.now()}_${file.value.name}`);
+    await uploadBytes(storageReference, file.value);
+    return await getDownloadURL(storageReference);
+  }
+  return pictureUrl.value;
+};
+
 const updateRecipe = async () => {
   try {
+    const newPictureUrl = await uploadFile();
     const updatedRecipe = {
       id: recipeId,
       title: title.value,
-      pictureUrl: pictureUrl.value,
+      pictureUrl: newPictureUrl,
       cookingTime: cookingTime.value,
       ingredients: ingredients.value,
       description: description.value
@@ -99,8 +114,6 @@ const deleteRecipe = async () => {
     }, 3000);
   }
 };
-
-onMounted(fetchRecipe);
 </script>
 
 <style scoped>
