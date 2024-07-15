@@ -53,6 +53,10 @@ const fetchRecipe = async () => {
   font-size: 20px;
   height: calc(100vh - 180px);
   color: white;
+  font-family: "Domine", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .header {
@@ -101,5 +105,6 @@ const fetchRecipe = async () => {
   margin-top: 20px;
   padding-bottom: 30px;
   margin-left: 20px;
+  line-height: 30px;
 }
 </style>

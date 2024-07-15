@@ -1,7 +1,8 @@
 <template>
   <div class="post-recipe">
+    <div class="left">
     <h1>Post a Recipe</h1>
-    <form @submit.prevent="submitRecipe">
+    <form @submit.prevent="submitRecipe" class="recipe-form">
       <p>Title: <input v-model="title" type="text" required /></p>
       <p>Picture: <input type="file" @change="handleFileUpload" /></p>
       <p>Cooking Time: <input v-model="cookingTime" type="text" required /></p>
@@ -9,6 +10,7 @@
       <p>Recipe: <textarea v-model="description" required></textarea></p>
       <button type="submit">Submit Recipe</button>
     </form>
+    </div>
   </div>
 </template>
 
@@ -67,14 +69,58 @@ const submitRecipe = async () => {
   padding: 20px;
   height: calc(100vh - 120px);
   color: white;
+  text-align: left; /* add this to left-justify the content */
+  margin-left: -450px;
 }
 
-form p {
+left {
+  align-items: left;
+}
+
+.recipe-form { /* New class name */
+  text-align: left;
+  color: white;
+}
+
+.post-recipe h1 {
+  margin-top: 60px;
+  margin-left: -50px;
+}
+
+.post-recipe recipe-form p {
   margin-bottom: 10px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  font-style: normal;
+  color: rgb(230, 240, 247);
+}
+
+input[type="text"], textarea {
+  width: 400px; /* increase the width of the text fields */
+  padding: 10px; /* add some padding to the text fields */
+  border: 1px solid #ccc; /* add a border to the text fields */
+  border-radius: 4px; /* add a border radius to the text fields */
+  margin-top: 10px;
 }
 
 textarea {
-  width: 100%;
-  height: 100px;
+  height: 150px; /* increase the height of the textarea */
+  resize: vertical; /* allow the textarea to be resized vertically */
 }
+
+input[type="text"], textarea {
+  display: block; /* add this to make the text fields take up the full width */
+  width: 700px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.left form button {
+  margin-bottom: 30px;
+  margin-top: 10px;
+  margin-left: 500px;
+}
+
 </style>

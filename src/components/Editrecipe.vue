@@ -2,12 +2,30 @@
   <div class="edit-recipe">
     <h1>Edit Recipe</h1>
     <form @submit.prevent="updateRecipe">
-      <p>Title: <input v-model="title" type="text" /></p>
-      <p>Picture URL: <input v-model="pictureUrl" type="text" /></p>
-      <p>Or Upload New Picture: <input type="file" @change="handleFileUpload" /></p>
-      <p>Cooking Time: <input v-model="cookingTime" type="text" /></p>
-      <p>Ingredients: <textarea v-model="ingredients"></textarea></p>
-      <p>Recipe: <textarea v-model="description"></textarea></p>
+      <div class="form-group">
+        <label>Title:</label>
+        <input v-model="title" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Picture URL:</label>
+        <input v-model="pictureUrl" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Or Upload New Picture:</label>
+        <input type="file" @change="handleFileUpload" />
+      </div>
+      <div class="form-group">
+        <label>Cooking Time:</label>
+        <input v-model="cookingTime" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Ingredients:</label>
+        <textarea v-model="ingredients"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Recipe:</label>
+        <textarea v-model="description"></textarea>
+      </div>
       <button type="submit">Update Recipe</button>
       <button type="button" @click="confirmDeleteRecipe" class="delete-button">Delete Recipe</button>
     </form>
@@ -119,15 +137,39 @@ const deleteRecipe = async () => {
 <style scoped>
 .edit-recipe {
   padding: 20px;
+  color: white;
+  margin-top: 400px;
 }
 
-form p {
-  margin-bottom: 10px;
+.edit-recipe h1 {
+  margin-left: -20px;
+  margin-top: 30px;
+  margin-bottom: 25px;
 }
 
-textarea {
-  width: 100%;
-  height: 100px;
+.form-group {
+  margin-bottom: 15px;
+  margin-left: -480px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group input[type="file"] {
+  width: 700px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  height: 150px;
+  resize: vertical;
 }
 
 .popup {
@@ -141,11 +183,13 @@ textarea {
 .delete-button {
   background-color: red;
   color: white;
-  padding: 9px;
+  padding: 8px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: -32px;
+  margin-bottom: 30px;
+  margin-right: 950px;
 }
 
 .delete-button:hover {

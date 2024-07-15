@@ -3,7 +3,7 @@
     <img src="@/assets/logo.png" alt="Logo" class="logo" />
     <div class="spacer"></div>
     <button @click="goToMainPage">Home</button>
-    <button @click="navigateToPostRecipe">Post a Recipe</button>
+    <button @click="navigateToPostRecipe">Post</button>
     <button @click="goToEditProfile">Edit Profile</button>
     <button @click="logout">Logout</button>
   </nav>
@@ -68,7 +68,7 @@ const logout = () => {
 }
 
 .logo {
-  max-height: 70px; /* adjust the height to your liking */
+  max-height: 68px; /* adjust the height to your liking */
   margin-left: 50px; /* add some margin to separate from the spacer */
 }
 

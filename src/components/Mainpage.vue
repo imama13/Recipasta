@@ -1,4 +1,7 @@
 <template>
+  <head><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+NSW:wght@100..400&display=swap" rel="stylesheet"></head>
   <div class="main-page">
     <h1>Welome To Recipasta!</h1>
     <div class="recipe-list">
@@ -67,9 +70,11 @@ const editRecipe = (id) => {
   text-align: center;
   margin-top: 40px;
   margin-bottom: -5px;
-  font-family: "Arsenal SC", sans-serif;
-  font-weight: 700;
-  font-style: italic;
+  font-family: "Playwrite AU NSW", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 40px;
+  font-style: normal;
 }
 
 
@@ -117,11 +122,16 @@ const editRecipe = (id) => {
 .recipe-details h2,
 .recipe-details p {
   margin: 5px 0; /* Add some margin between text fields */
+  font-family: "Domine", serif;
 }
 
 .recipe-details p {
   margin-top: 10px;
   margin-left: 10px;
+  font-family: "Domine", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .ingredients,
