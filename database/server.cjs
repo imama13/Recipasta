@@ -3,7 +3,10 @@ const mysql = require('mysql2')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const admin = require('firebase-admin');
-const serviceAccount = require('./firebase-adminsdk.json'); 
+const serviceAccount = require('../src/firebase-adminsdk.json'); 
+const bcrypt = require('bcrypt');
+
+;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -15,7 +18,7 @@ const bucket = admin.storage().bucket();
 const app = express()
 app.use(cors())
 app.use(bodyParser.json())
-
+app.use(express.json())
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root', 
@@ -45,30 +48,83 @@ app.get('/users', (req, res) => {
   }
 })
 
-app.post('/users', (req, res) => {
-  const { username, password, email, dob } = req.body
-  db.query(
-    'INSERT INTO users (username, password, email, dob) VALUES (?, ?, ?, ?)',
-    [username, password, email, dob],
-    (err, results) => {
-      if (err) throw err
-      res.json({ id: results.insertId, username, password, email, dob })
-    }
-  )
-})
+app.post('/users', async (req, res) => {
+  const { username, password, email, dob } = req.body;
 
-app.put('/users/:id', (req, res) => {
-  const { id } = req.params
-  const { username, password, email, dob } = req.body
-  db.query(
-    'UPDATE users SET username = ?, password = ?, email = ?, dob = ? WHERE id = ?',
-    [username, password, email, dob, id],
-    (err, results) => {
-      if (err) throw err
-      res.json({ id, username, password, email, dob })
+  try {
+    // Check if the username is already taken
+    db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
+      if (err) {
+        console.error('Error checking username:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+
+      if (results.length > 0) {
+        return res.status(400).json({ message: 'Username already taken. Please choose a different username.' });
+      }
+
+      // Hash the password
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      // Store the user with the hashed password
+      db.query(
+        'INSERT INTO users (username, password, email, dob) VALUES (?, ?, ?, ?)',
+        [username, hashedPassword, email, dob],
+        (err, result) => {
+          if (err) {
+            console.error('Error signing up user:', err);
+            return res.status(500).json({ message: 'Internal server error' });
+          }
+
+          // Return the newly created user
+          db.query('SELECT * FROM users WHERE id = ?', [result.insertId], (err, newUser) => {
+            if (err) {
+              console.error('Error fetching new user:', err);
+              return res.status(500).json({ message: 'Internal server error' });
+            }
+
+            res.status(201).json(newUser[0]);
+          });
+        }
+      );
+    });
+  } catch (error) {
+    console.error('Error signing up user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+app.put('/users/:id', async (req, res) => {
+  const { id } = req.params;
+  const { username, password, email, dob } = req.body;
+
+  try {
+    // Hash the new password if it's provided
+    let hashedPassword = password;
+    if (password) {
+      const saltRounds = 10;
+      hashedPassword = await bcrypt.hash(password, saltRounds);
     }
-  )
-})
+
+    db.query(
+      'UPDATE users SET username = ?, password = ?, email = ?, dob = ? WHERE id = ?',
+      [username, hashedPassword, email, dob, id],
+      (err, results) => {
+        if (err) {
+          console.error('Error updating user:', err);
+          return res.status(500).json({ message: 'Internal server error' });
+        }
+        res.json({ id, username, password: hashedPassword, email, dob });
+      }
+    );
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 app.delete('/users/:id', (req, res) => {
   const { id } = req.params
@@ -180,9 +236,6 @@ app.delete('/recipes/:id', (req, res) => {
     res.json({ message: 'Recipe deleted successfully' });
   });
 });
-
-
-
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {

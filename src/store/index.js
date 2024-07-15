@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
+import bcrypt from 'bcryptjs';
 
 const store = createStore({
   state: {
@@ -66,7 +67,14 @@ const store = createStore({
           throw new Error('Username already taken. Please choose a different username.');
         }
 
-        const userResponse = await axios.post('http://localhost:3000/users', userData);
+        // Hash the password before sending it to the server
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
+        const userResponse = await axios.post('http://localhost:3000/users', {
+          ...userData,
+          password: hashedPassword,
+        });
+        
         commit('setUser', userResponse.data);
         return userResponse.data;
       } catch (error) {
@@ -75,9 +83,18 @@ const store = createStore({
     },
     async login({ commit }, { username, password }) {
       try {
+        // Fetch user by username
         const response = await axios.get('http://localhost:3000/users');
-        const user = response.data.find(user => user.username === username && user.password === password);
-        if (user) {
+        const user = response.data.find(user => user.username === username);
+    
+        if (!user) {
+          throw new Error('Invalid credentials');
+        }
+    
+        // Compare the provided password with the stored hashed password
+        const passwordMatch = await bcrypt.compare(password, user.password);
+    
+        if (passwordMatch) {
           commit('setUser', user);
           localStorage.setItem('userId', user.id);
           return user;
@@ -89,6 +106,7 @@ const store = createStore({
         throw error;
       }
     },
+    
     logout({ commit }) {
       commit('setUser', null);
     },

@@ -1,6 +1,6 @@
 <template>
   <div class="main-page">
-    <h1>Recipes</h1>
+    <h1>Welome To Recipasta!</h1>
     <div class="recipe-list">
       <div v-if="recipes.length === 0">
         <p>No recipes found.</p>
@@ -62,16 +62,22 @@ const editRecipe = (id) => {
   color: #E9EFFF;
 }
 
+
 .main-page h1 {
   text-align: center;
   margin-top: 40px;
   margin-bottom: -5px;
+  font-family: "Arsenal SC", sans-serif;
+  font-weight: 700;
+  font-style: italic;
 }
+
 
 .recipe-list {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  margin-right: 125px;
 }
 
 .recipe-card {
@@ -84,7 +90,7 @@ const editRecipe = (id) => {
   height: 250px;
   display: flex;
   gap: 20px;
-   border-radius: 15px;
+  border-radius: 15px;
 }
 
 .recipe-card img {

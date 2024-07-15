@@ -1,16 +1,18 @@
 <template>
+
   <div class="page">
-    <div class="form-container">
-      <h1>Log In!</h1>
-      <br/>
+    
+    <div class="form-container"><img src="@/assets/logo.png" alt="Logo" class="logo" />
+      <h1>LOGIN!</h1>
       <form @submit.prevent="login">
+        <h3>Sign In to Your Account</h3>
+        <br/>
         <p>Username: <input v-model="username" type="text" required></p>
         <p>Password: <input v-model="password" type="password" required></p>
-        <button type="submit">Log in</button>
+        <button type="submit">Login</button>
       </form>
       <br/>
-      <p>Create new account?
-      <router-link to="/signup">Sign Up</router-link></p>
+      <p>Don't have an account? <router-link to="/signup">Sign Up</router-link></p>
     </div>
   </div>
 </template>
@@ -23,7 +25,6 @@ import '@/assets/forms.css';
 
 const username = ref('');
 const password = ref('');
-
 const router = useRouter();
 const store = useStore();
 
@@ -33,7 +34,7 @@ const login = async () => {
     router.push('/dashboard');
   } catch (error) {
     console.error('Error logging in:', error);
-    showMessage('Invalid credentials or login failed.');
+    showMessage(error.message);
   }
 };
 
@@ -50,10 +51,9 @@ const showMessage = (message) => {
 
 <style scoped>
 /* Add your styles here */
-
 .popup {
   background-color: #ff6666;
-  color: white;
+  color: #ffffff;
   padding: 10px;
   border-radius: 4px;
   position: fixed;
@@ -61,4 +61,5 @@ const showMessage = (message) => {
   right: 20px;
   z-index: 1000;
 }
+
 </style>

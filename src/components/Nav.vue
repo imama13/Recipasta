@@ -1,5 +1,6 @@
 <template>
   <nav class="navbar">
+    <img src="@/assets/logo.png" alt="Logo" class="logo" />
     <div class="spacer"></div>
     <button @click="goToMainPage">Home</button>
     <button @click="navigateToPostRecipe">Post a Recipe</button>
@@ -11,6 +12,7 @@
 <script setup>
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+
 
 const store = useStore();
 const router = useRouter();
@@ -58,11 +60,16 @@ const logout = () => {
   font-weight: 600;
   font-size:medium;
   background-color: #3e77b000;
-  color: rgb(255, 255, 255);
+  color: #cef2eb;
   border: none;
   border-radius: 4px;
   padding: 5px 15px; /* Adjust padding for smaller button size */
   cursor: pointer;
+}
+
+.logo {
+  max-height: 70px; /* adjust the height to your liking */
+  margin-left: 50px; /* add some margin to separate from the spacer */
 }
 
 .navbar button:hover {
