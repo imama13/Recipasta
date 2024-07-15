@@ -1,6 +1,12 @@
 <template>
+  <head><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+NSW:wght@100..400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">
+</head>
   <div class="post-recipe">
-    <div class="left">
     <h1>Post a Recipe</h1>
     <form @submit.prevent="submitRecipe" class="recipe-form">
       <p>Title: <input v-model="title" type="text" required /></p>
@@ -10,7 +16,6 @@
       <p>Recipe: <textarea v-model="description" required></textarea></p>
       <button type="submit">Submit Recipe</button>
     </form>
-    </div>
   </div>
 </template>
 
@@ -73,9 +78,6 @@ const submitRecipe = async () => {
   margin-left: -450px;
 }
 
-left {
-  align-items: left;
-}
 
 .recipe-form { /* New class name */
   text-align: left;
@@ -84,14 +86,20 @@ left {
 
 .post-recipe h1 {
   margin-top: 60px;
-  margin-left: -50px;
+  margin-left: 90px;
+  font-family: "Playwrite AU NSW", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 40px;
+  font-style: normal;
 }
 
 .post-recipe recipe-form p {
   margin-bottom: 10px;
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto Serif", serif;
+  font-optical-sizing: auto;
   font-weight: 400;
-  font-size: 17px;
+  font-size: 20px;
   font-style: normal;
   color: rgb(230, 240, 247);
 }

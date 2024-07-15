@@ -1,4 +1,7 @@
 <template>
+  <head><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+NSW:wght@100..400&display=swap" rel="stylesheet"></head>
   <div class="edit-recipe">
     <h1>Edit Recipe</h1>
     <form @submit.prevent="updateRecipe">
@@ -145,6 +148,11 @@ const deleteRecipe = async () => {
   margin-left: -20px;
   margin-top: 30px;
   margin-bottom: 25px;
+  font-family: "Playwrite AU NSW", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 40px;
+  font-style: normal;
 }
 
 .form-group {

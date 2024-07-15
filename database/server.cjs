@@ -6,7 +6,7 @@ const admin = require('firebase-admin');
 const serviceAccount = require('../src/firebase-adminsdk.json'); 
 const bcrypt = require('bcrypt');
 
-;
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

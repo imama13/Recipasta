@@ -1,4 +1,6 @@
-<template>
+<template><head><link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+NSW:wght@100..400&display=swap" rel="stylesheet"></head>
   <div class="recipe-detail" v-if="recipe">
     <div class="header">
       <h1>{{ recipe.title }}</h1>
@@ -9,9 +11,9 @@
     <div class="info">
       <p class="cooking-time">Cooking time: {{ recipe.cookingTime }}</p>
       <ul class="ingredients">
-        <h2>Ingredients</h2>
-        <li v-for="ingredient in recipe.ingredients.split(',')" :key="ingredient">{{ ingredient }}</li>
-      </ul>
+      <h2>Ingredients</h2>
+      <li v-for="ingredient in splitIngredients(recipe.ingredients)" :key="ingredient">{{ ingredient.trim() }}</li>
+    </ul>
     </div>
     <div class= "des">
     <h2>Description</h2>
@@ -45,6 +47,11 @@ const fetchRecipe = async () => {
     console.error('Error fetching recipe:', error);
   }
 };
+
+const splitIngredients = (ingredients) => {
+  return ingredients.split(/[\n,]+/).filter(ingredient => ingredient.trim() !== '');
+};
+
 </script>
 
 <style scoped>
@@ -63,6 +70,15 @@ const fetchRecipe = async () => {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.header h1 {
+  font-family: "Playwrite AU NSW", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 40px;
+  font-style: normal;
+  margin-bottom: 50px;
 }
 
 .image-container {

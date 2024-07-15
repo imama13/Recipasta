@@ -42,6 +42,7 @@ onMounted(async () => {
   try {
     await store.dispatch('fetchRecipes'); // Ensure this action name matches your Vuex setup
     recipes.value = store.getters.recipes; // Assuming 'recipes' getter returns the fetched recipes
+    
   } catch (error) {
     console.error('Error fetching recipes:', error);
   }
